@@ -35,11 +35,11 @@ This simulates a **real consulting engagement** where you must deliver both a pr
 
 ## 🗃️ Dataset
 
-You will receive **25 multimodal inputs**, including:
-- 📄 10 scanned letters  
-- ✉️ 10 plain text emails  
-- 📱 10 WhatsApp screenshots  
-- ✍️ 10 handwritten notes or scribbles  
+You will receive **26 multimodal inputs**, including:
+- 📄 scanned letters  
+- ✉️ plain text emails  
+- 📱 WhatsApp screenshots  
+- ✍️ handwritten notes or scribbles  
 
 Each document contains **explicit or implicit tax-related deadlines**, often requiring nuanced interpretation.
 
