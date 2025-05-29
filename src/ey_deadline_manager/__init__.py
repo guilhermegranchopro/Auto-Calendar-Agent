@@ -9,10 +9,7 @@ __author__ = "Guilherme Grancho"
 __email__ = "guilherme@example.com"
 
 # Import main modules
-from . import app, core, models, utils
-
-# Import main app function
-from .app.streamlit_app import main
+from . import core, models, utils
 
 # Import key functions from core
 from .core.deadline_agent_backend import (

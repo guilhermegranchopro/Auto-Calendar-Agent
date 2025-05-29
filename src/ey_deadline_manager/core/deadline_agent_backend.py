@@ -7,10 +7,12 @@ import json
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Literal, Optional
 
 import google.generativeai as genai
 import holidays
 from dateutil.relativedelta import relativedelta
+from langchain_google_genai import ChatGoogleGenerativeAI
 from PyPDF2 import PdfReader
 
 # Configure Gemini API
@@ -21,9 +23,21 @@ genai.configure(api_key=GEMINI_API_KEY)
 class DeadlineManagerAgent:
     """AI-powered deadline manager for Portuguese tax obligations"""
 
-    def __init__(self):
+    def __init__(self, ai_model: Literal["gemini-pro", "gemini-2.0-flash-001"] = "gemini-pro"):
         self.portuguese_holidays = holidays.Portugal()
         self.reference_date = datetime.now()
+        self.ai_model = ai_model
+        
+        # Initialize AI models
+        if ai_model == "gemini-2.0-flash-001":
+            self.llm = ChatGoogleGenerativeAI(
+                model="gemini-2.0-flash-001",
+                google_api_key=GEMINI_API_KEY,
+                temperature=0.1
+            )
+        else:
+            # Default to original Gemini Pro
+            self.genai_model = genai.GenerativeModel("gemini-pro")
 
     def extract_text_from_image(self, image_path_or_file, use_mock_ocr=True):
         """Extract text from image using OCR (mock implementation for demo)"""
@@ -297,7 +311,6 @@ class DeadlineManagerAgent:
     def process_with_gemini_ai(self, text, reference_date=None):
         """Use Gemini AI to extract deadline information when rule-based approach fails"""
         try:
-            model = genai.GenerativeModel("gemini-pro")
             ref = reference_date or self.reference_date
 
             prompt = f"""
@@ -325,8 +338,14 @@ class DeadlineManagerAgent:
             If no deadline can be determined, return {{"error": "No deadline found"}}.
             """
 
-            response = model.generate_content(prompt)
-            response_text = response.text.strip()
+            if self.ai_model == "gemini-2.0-flash-001":
+                # Use LangChain ChatGoogleGenerativeAI
+                response = self.llm.invoke(prompt)
+                response_text = response.content.strip()
+            else:
+                # Use original Gemini Pro
+                response = self.genai_model.generate_content(prompt)
+                response_text = response.text.strip()
 
             # Try to extract JSON from response
             if "{" in response_text and "}" in response_text:
@@ -481,55 +500,58 @@ class DeadlineManagerAgent:
 
 
 # Convenience functions for direct use
-def create_agent():
+def create_agent(ai_model: Literal["gemini-pro", "gemini-2.0-flash-001"] = "gemini-pro"):
     """Create a new DeadlineManagerAgent instance"""
-    return DeadlineManagerAgent()
+    return DeadlineManagerAgent(ai_model=ai_model)
 
 
-def process_text(text, reference_date=None):
+def process_text(text, reference_date=None, ai_model: Literal["gemini-pro", "gemini-2.0-flash-001"] = "gemini-pro"):
     """Quick function to process text"""
-    agent = create_agent()
+    agent = create_agent(ai_model)
     return agent.process_document(text, reference_date)
 
 
-def process_file(file_path, reference_date=None):
+def process_file(file_path, reference_date=None, ai_model: Literal["gemini-pro", "gemini-2.0-flash-001"] = "gemini-pro"):
     """Quick function to process a file"""
-    agent = create_agent()
+    agent = create_agent(ai_model)
     return agent.process_file(file_path, reference_date)
 
 
-def process_folder(folder_path, reference_date=None):
+def process_folder(folder_path, reference_date=None, ai_model: Literal["gemini-pro", "gemini-2.0-flash-001"] = "gemini-pro"):
     """Quick function to process all files in a folder"""
-    agent = create_agent()
+    agent = create_agent(ai_model)
     return agent.batch_process_folder(folder_path, reference_date)
 
 
 # Example usage and testing
 if __name__ == "__main__":
-    # Test the agent
-    agent = DeadlineManagerAgent()
+    # Test the agent with both models
+    print("🧠 EY AI Challenge - Deadline Manager Agent Backend Test")
+    print("=" * 60)
 
-    # Test with sample text
     test_cases = [
         "To Do: IES ACE - enviar declaração até 15 de abril",
-        "To Do: SAF-T - entregar ficheiro até dia 25 do mês seguinte",
+        "To Do: SAF-T - entregar ficheiro até dia 25 do mês seguinte", 
         "Deve responder no prazo de 15 dias úteis a partir desta notificação",
         "To Do: Declaração IVA - prazo trimestral",
     ]
 
-    print("🧠 EY AI Challenge - Deadline Manager Agent Backend Test")
-    print("=" * 60)
+    for model in ["gemini-pro", "gemini-2.0-flash-001"]:
+        print(f"\n🤖 Testing with {model}")
+        print("-" * 40)
+        agent = DeadlineManagerAgent(ai_model=model)
 
-    for i, text in enumerate(test_cases, 1):
-        print(f"\nTest {i}: {text}")
-        result = agent.process_document(text)
+        for i, text in enumerate(test_cases, 1):
+            print(f"\nTest {i}: {text}")
+            result = agent.process_document(text)
 
-        if "deadline" in result:
-            print(f"✅ Deadline: {result['deadline'].strftime('%Y-%m-%d')}")
-            print(f"   Rule: {result['rule']}")
-            print(f"   Priority: {result['priority']}")
-        else:
-            print(f"❌ Error: {result.get('error', 'Unknown error')}")
+            if "deadline" in result:
+                print(f"✅ Deadline: {result['deadline'].strftime('%Y-%m-%d')}")
+                print(f"   Rule: {result['rule']}")
+                print(f"   Priority: {result['priority']}")
+                print(f"   Model: {model}")
+            else:
+                print(f"❌ Error: {result.get('error', 'Unknown error')}")
 
     print(f"\n{'=' * 60}")
     print("✅ Backend testing complete!")
