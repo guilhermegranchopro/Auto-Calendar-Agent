@@ -38,7 +38,7 @@ from ey_deadline_manager.core.deadline_agent_backend import (
 GEMINI_API_KEY = "AIzaSyB1XJV_CWEu9zojtETnViNEhwoFa8CF-FE"
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Custom CSS for EY branding
+# Custom CSS for EY branding with proper contrast
 st.markdown("""
     <style>
     .main-header {
@@ -53,6 +53,13 @@ st.markdown("""
         margin: 0;
         font-weight: bold;
     }
+    .main-header p {
+        color: black !important;
+        text-align: center;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 500;
+    }
     .ey-yellow {
         background-color: #FFE600;
         color: black;
@@ -61,18 +68,137 @@ st.markdown("""
         font-weight: bold;
     }
     .result-box {
-        background-color: #f0f2f6;
-        padding: 15px;
+        background-color: #f8f9fa;
+        color: #212529;
+        padding: 20px;
         border-radius: 10px;
         border-left: 5px solid #FFE600;
-        margin: 10px 0;
+        margin: 15px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .result-box h3 {
+        color: #212529 !important;
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+    .result-box p {
+        color: #495057 !important;
+        margin-bottom: 8px;
+        line-height: 1.5;
+    }
+    .result-box strong {
+        color: #212529 !important;
+        font-weight: 600;
+    }
+    
+    /* Fix sidebar styling */
     .sidebar .sidebar-content {
         background-color: #f7f7f7;
     }
+    
+    /* Fix selectbox styling */
     .stSelectbox > div > div {
         background-color: #FFE600;
         color: black;
+    }
+    
+    /* Fix info boxes */
+    .stInfo {
+        background-color: #d1ecf1 !important;
+        color: #0c5460 !important;
+        border: 1px solid #bee5eb !important;
+    }
+    
+    /* Fix success boxes */
+    .stSuccess {
+        background-color: #d4edda !important;
+        color: #155724 !important;
+        border: 1px solid #c3e6cb !important;
+    }
+    
+    /* Fix warning boxes */
+    .stWarning {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+        border: 1px solid #ffeaa7 !important;
+    }
+    
+    /* Fix error boxes */
+    .stError {
+        background-color: #f8d7da !important;
+        color: #721c24 !important;
+        border: 1px solid #f5c6cb !important;
+    }
+    
+    /* Fix expander headers */
+    .streamlit-expanderHeader {
+        background-color: #e9ecef !important;
+        color: #495057 !important;
+        border: 1px solid #ced4da !important;
+    }
+    
+    /* Fix metric cards */
+    .metric-container {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    /* Fix tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: #f8f9fa;
+        color: #495057;
+        border: 1px solid #dee2e6;
+        border-radius: 4px 4px 0 0;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #FFE600 !important;
+        color: black !important;
+        font-weight: bold;
+    }
+    
+    /* Fix text areas and inputs */
+    .stTextArea textarea {
+        background-color: #ffffff !important;
+        color: #495057 !important;
+        border: 1px solid #ced4da !important;
+    }
+    
+    .stTextInput input {
+        background-color: #ffffff !important;
+        color: #495057 !important;
+        border: 1px solid #ced4da !important;
+    }
+    
+    /* Fix caption text */
+    .stCaption {
+        color: #6c757d !important;
+    }
+    
+    /* Footer styling */
+    .footer-style {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .footer-style p {
+        color: #6c757d !important;
+        margin: 5px 0;
+    }
+    
+    .footer-style strong {
+        color: #495057 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -138,7 +264,7 @@ def agent_process(text, reference_date=None):
     return backend_process_text(text, reference_date, ai_model)
 
 def display_result(result, show_model_info=True):
-    """Display processing result with enhanced formatting."""
+    """Display processing result with enhanced formatting and proper contrast."""
     if "deadline" in result:
         deadline = result["deadline"]
         days_until = (deadline - datetime.now()).days
@@ -406,17 +532,29 @@ with tab5:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("**🤖 AI Model Configuration**")
-        st.write(f"• Current Model: {st.session_state.ai_model}")
-        st.write(f"• Implementation: {implementation}")
-        st.write(f"• API Status: {'🟢 Connected' if GEMINI_API_KEY else '🔴 Not configured'}")
+        st.markdown("""
+        <div class="metric-container">
+            <h4 style="color: #495057; margin-bottom: 10px;">🤖 AI Model Configuration</h4>
+            <p style="color: #6c757d; margin: 5px 0;">• Current Model: <strong style="color: #212529;">{}</strong></p>
+            <p style="color: #6c757d; margin: 5px 0;">• Implementation: <strong style="color: #212529;">{}</strong></p>
+            <p style="color: #6c757d; margin: 5px 0;">• API Status: <strong style="color: #212529;">{}</strong></p>
+        </div>
+        """.format(
+            st.session_state.ai_model,
+            implementation,
+            '🟢 Connected' if GEMINI_API_KEY else '🔴 Not configured'
+        ), unsafe_allow_html=True)
     
     with col2:
-        st.markdown("**⚙️ Processing Capabilities**")
-        st.write("• Rule-based deadline detection")
-        st.write("• Natural language processing")
-        st.write("• Multi-format document support")
-        st.write("• Portuguese tax law compliance")
+        st.markdown("""
+        <div class="metric-container">
+            <h4 style="color: #495057; margin-bottom: 10px;">⚙️ Processing Capabilities</h4>
+            <p style="color: #6c757d; margin: 5px 0;">• Rule-based deadline detection</p>
+            <p style="color: #6c757d; margin: 5px 0;">• Natural language processing</p>
+            <p style="color: #6c757d; margin: 5px 0;">• Multi-format document support</p>
+            <p style="color: #6c757d; margin: 5px 0;">• Portuguese tax law compliance</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Performance metrics
     st.subheader("📈 Performance Metrics")
@@ -456,7 +594,7 @@ with tab5:
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #666; padding: 20px;">
+<div class="footer-style">
     <p><strong>EY AI Deadline Manager Agent</strong> | Powered by Google Gemini AI | Built with Streamlit</p>
     <p>🏗️ Version 2.0 with Multi-Model Support | 🔒 Secure & Compliant</p>
 </div>
