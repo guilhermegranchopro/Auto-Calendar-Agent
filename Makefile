@@ -1,7 +1,7 @@
 # EY AI Challenge Deadline Manager - Makefile
 # Usage: make <target>
 
-.PHONY: help install dev-install run test lint format typecheck clean update
+.PHONY: help install dev-install run test lint format typecheck clean update check-format lint-check setup-hooks pre-commit-all
 
 # Default target
 help:
@@ -14,9 +14,15 @@ help:
 	@echo "Development:"
 	@echo "  run          - Start the Streamlit application"
 	@echo "  test         - Run the test suite"
-	@echo "  lint         - Run code linting (flake8)"
-	@echo "  format       - Format code (black)"
+	@echo "  lint         - Run code linting (ruff)"
+	@echo "  format       - Format code (ruff)"
+	@echo "  check-format - Check code formatting without applying changes"
+	@echo "  lint-check   - Check linting without fixing issues"
 	@echo "  typecheck    - Run type checking (mypy)"
+	@echo ""
+	@echo "Git Hooks:"
+	@echo "  setup-hooks  - Install pre-commit hooks"
+	@echo "  pre-commit-all - Run pre-commit on all files"
 	@echo ""
 	@echo "Maintenance:"
 	@echo "  update       - Update all dependencies"
@@ -49,12 +55,22 @@ test:
 # Lint code
 lint:
 	@echo "🔍 Running code linting..."
-	uv run flake8 *.py --max-line-length=88 --extend-ignore=E203,W503
+	uv run ruff check --fix
 
 # Format code
 format:
 	@echo "✨ Formatting code..."
-	uv run black *.py
+	uv run ruff format
+
+# Check formatting without applying changes
+check-format:
+	@echo "🔍 Checking code formatting..."
+	uv run ruff format --check
+
+# Run linting without fixing issues
+lint-check:
+	@echo "🔍 Checking code linting (no fixes)..."
+	uv run ruff check --no-fix
 
 # Type checking
 typecheck:
@@ -65,6 +81,16 @@ typecheck:
 update:
 	@echo "📦 Updating dependencies..."
 	uv sync --upgrade
+
+# Setup pre-commit hooks
+setup-hooks:
+	@echo "🪝 Setting up pre-commit hooks..."
+	uv run pre-commit install
+
+# Run pre-commit on all files
+pre-commit-all:
+	@echo "🔍 Running pre-commit on all files..."
+	uv run pre-commit run --all-files
 
 # Clean cache and build files
 clean:

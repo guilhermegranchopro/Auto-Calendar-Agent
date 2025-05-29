@@ -10,18 +10,18 @@ __version__ = "1.0.0"
 __author__ = "Guilherme Grancho"
 __email__ = "guilherme@example.com"
 
-from .streamlit_app import main
 from .deadline_agent_backend import (
     DeadlineManagerAgent,
-    apply_portuguese_tax_rules,
     add_working_days,
-    process_with_gemini_ai
+    apply_portuguese_tax_rules,
+    process_with_gemini_ai,
 )
+from .streamlit_app import main
 
 __all__ = [
-    "main",
-    "DeadlineManagerAgent", 
-    "apply_portuguese_tax_rules",
+    "DeadlineManagerAgent",
     "add_working_days",
-    "process_with_gemini_ai"
+    "apply_portuguese_tax_rules",
+    "main",
+    "process_with_gemini_ai",
 ]
