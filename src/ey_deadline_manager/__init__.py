@@ -1,27 +1,37 @@
 """
-EY AI Deadline Manager - A comprehensive AI-powered solution for Portuguese tax deadline management.
+EY AI Challenge Deadline Manager
 
-This package provides intelligent deadline extraction and management capabilities for Portuguese
-tax professionals, featuring multi-modal document processing, Portuguese tax law compliance,
-and AI-powered deadline inference.
+A sophisticated AI-powered deadline management system for Portuguese tax professionals.
 """
 
 __version__ = "1.0.0"
 __author__ = "Guilherme Grancho"
 __email__ = "guilherme@example.com"
 
-from .deadline_agent_backend import (
+# Import main modules
+from . import app, core, models, utils
+
+# Import main app function
+from .app.streamlit_app import main
+
+# Import key functions from core
+from .core.deadline_agent_backend import (
     DeadlineManagerAgent,
-    add_working_days,
-    apply_portuguese_tax_rules,
-    process_with_gemini_ai,
+    create_agent,
+    process_file,
+    process_folder,
+    process_text,
 )
-from .streamlit_app import main
 
 __all__ = [
     "DeadlineManagerAgent",
-    "add_working_days",
-    "apply_portuguese_tax_rules",
+    "app",
+    "core",
+    "create_agent",
     "main",
-    "process_with_gemini_ai",
+    "models",
+    "process_file",
+    "process_folder",
+    "process_text",
+    "utils",
 ]

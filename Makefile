@@ -43,14 +43,14 @@ dev-install:
 # Run the Streamlit application
 run:
 	@echo "🚀 Starting EY AI Deadline Manager..."
-	uv run streamlit run streamlit_app.py
+	uv run streamlit run src/ey_deadline_manager/app/streamlit_app.py
 
 # Run tests
 test:
 	@echo "🧪 Running test suite..."
-	uv run python test_streamlit_app.py
-	@echo "🧪 Running pytest..."
-	uv run pytest test_agent.py -v
+	python3 tests/test_streamlit_app.py
+	@echo "🧪 Running agent tests..."
+	python3 tests/test_agent.py
 
 # Lint code
 lint:
@@ -107,12 +107,12 @@ clean:
 # Demo specific targets
 demo:
 	@echo "🎬 Starting demo mode..."
-	uv run streamlit run streamlit_app.py --server.port 8504
+	uv run streamlit run src/ey_deadline_manager/app/streamlit_app.py --server.port 8504
 
 # Batch process all documents
 batch-process:
 	@echo "📊 Running batch processing on all documents..."
-	uv run python -c "from streamlit_app import process_all_documents; from pathlib import Path; files = list(Path('Data').iterdir()); process_all_documents(files[:5])"
+	uv run python -c "import sys; sys.path.insert(0, 'src'); from ey_deadline_manager.app.streamlit_app import process_all_documents; from pathlib import Path; files = list(Path('data').iterdir()); process_all_documents(files[:5])"
 
 # Check system requirements
 check:

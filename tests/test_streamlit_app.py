@@ -5,8 +5,12 @@ Test script for the EY AI Challenge Deadline Manager Agent
 
 import sys
 from datetime import datetime
+from pathlib import Path
 
-from streamlit_app import (
+# Add src to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from ey_deadline_manager.app.streamlit_app import (
     add_working_days,
     agent_process,
     apply_portuguese_tax_rules,
@@ -149,7 +153,7 @@ def main():
             "   1. Run 'python3 -m streamlit run streamlit_app.py' to start the web interface"
         )
         print("   2. Access the application at http://localhost:8502")
-        print("   3. Test with sample documents from the Data/ folder")
+        print("   3. Test with sample documents from the data/ folder")
         print("   4. Present the solution to EY executives!")
 
     except Exception as e:

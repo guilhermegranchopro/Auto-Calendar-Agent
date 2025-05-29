@@ -225,7 +225,7 @@ def agent_process(text, reference_date=None):
     return {"error": "No deadline pattern recognized"}
 
 
-def process_all_documents(data_folder="Data"):
+def process_all_documents(data_folder="data"):
     """Process all documents in the data folder and extract deadlines"""
     results = []
     data_path = Path(data_folder)

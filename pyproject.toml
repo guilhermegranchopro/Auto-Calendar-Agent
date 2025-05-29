@@ -88,7 +88,9 @@ exclude = [
     "node_modules",
     "venv",
     "__pycache__",
-    "Data/",  # Exclude data files
+    "data/",  # Exclude data files (lowercase)
+    "reports/", # Exclude reports
+    "notebooks/", # Exclude notebooks
 ]
 
 # Allow autofix for all enabled rules
