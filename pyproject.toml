@@ -1,0 +1,72 @@
+[project]
+name = "ey-ai-deadline-manager"
+version = "1.0.0"
+description = "EY AI Challenge - Auto Calendar Deadline Manager Agent for Portuguese Tax Professionals"
+authors = [
+    {name = "Guilherme Grancho", email = "guilherme@example.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+keywords = ["ai", "tax", "deadlines", "portugal", "ey", "streamlit"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "streamlit>=1.28.1",
+    "pandas>=2.1.1",
+    "plotly>=5.17.0",
+    "Pillow>=10.0.1",
+    "PyPDF2>=3.0.1",
+    "python-dateutil>=2.8.2",
+    "holidays>=0.34",
+    "google-generativeai>=0.3.1",
+    "pathlib2>=2.3.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/guilhermegrancho/ey-ai-deadline-manager"
+"Bug Tracker" = "https://github.com/guilhermegrancho/ey-ai-deadline-manager/issues"
+"Repository" = "https://github.com/guilhermegrancho/ey-ai-deadline-manager.git"
+
+[project.scripts]
+ey-deadline-manager = "streamlit_app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
