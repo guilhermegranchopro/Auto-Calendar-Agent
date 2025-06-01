@@ -4,10 +4,11 @@ Core processing engine extracted from AutoCalendarAgent.ipynb
 """
 
 import json
+import os
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Literal
 
 import google.generativeai as genai
 import holidays
@@ -16,8 +17,9 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from PyPDF2 import PdfReader
 
 # Configure Gemini API
-GEMINI_API_KEY = "AIzaSyB1XJV_CWEu9zojtETnViNEhwoFa8CF-FE"
-genai.configure(api_key=GEMINI_API_KEY)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 
 class DeadlineManagerAgent:
