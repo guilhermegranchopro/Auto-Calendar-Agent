@@ -1,3 +1,9 @@
+![alt text](https://github.com/EYAIChallenge/Overview/blob/main/Banner-EY-1280x640.jpg "EY AI Challenge")
+
+<h1 align="center"> <img src="https://github.com/EYAIChallenge/Overview/blob/main/EY_Logo_Beam_RGB_White_Yellow.png" width="40" alt="Logo"/> AI Challenge 2025 | Auto Calendar Deadline Manager Agent Challenge </h1>
+
+---
+
 # 🚀 Developed Solution: AI-Powered Deadline Manager
 
 ## 📋 Solution Overview
@@ -124,11 +130,6 @@ make format        # Auto-format code
 - **Document Types**: PDF (70%), DOCX (20%), Images (10%)
 - **Business Impact**: €99,970 annual value per user
 
----
-
-![alt text](https://github.com/EYAIChallenge/Overview/blob/main/Banner-EY-1280x640.jpg "EY AI Challenge")
-
-<h1 align="center"> <img src="https://github.com/EYAIChallenge/Overview/blob/main/EY_Logo_Beam_RGB_White_Yellow.png" width="40" alt="Logo"/> AI Challenge 2025 | Auto Calendar Deadline Manager Agent Challenge </h1>
 ---
 
 # 🧠 Original Challenge Description
