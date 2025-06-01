@@ -34,8 +34,11 @@ st.set_page_config(
 )
 
 # Configure Gemini API
-GEMINI_API_KEY = "AIzaSyB1XJV_CWEu9zojtETnViNEhwoFa8CF-FE"
-genai.configure(api_key=GEMINI_API_KEY)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
+else:
+    st.error("⚠️ GEMINI_API_KEY environment variable not set. Please configure your API key.")
 
 # Custom CSS for EY branding
 st.markdown(

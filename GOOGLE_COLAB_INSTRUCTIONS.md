@@ -29,7 +29,7 @@ Create the following folder structure in your Google Drive:
 3. If Colab is not available, install it from Google Workspace Marketplace
 
 ### 3. Configure API Key
-1. In the notebook, locate the cell with `GEMINI_API_KEY = "AIzaSyB..."`
+1. In the notebook, locate the cell with `GEMINI_API_KEY = "your_api_key_here"`
 2. Replace with your actual Gemini API key from https://aistudio.google.com/app/apikey
 3. **IMPORTANT**: For security, consider using Colab secrets instead of hardcoding
 
